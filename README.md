@@ -8,6 +8,8 @@ Auto-switches your git identity when you `cd` into a project directory.
 
 ### Homebrew (recommended)
 
+<img src="https://brew.sh/assets/img/homebrew.svg" alt="Homebrew" width="120">
+
 ```sh
 brew tap RXNova/gitid
 brew install gitid
