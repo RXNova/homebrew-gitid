@@ -2,7 +2,7 @@ class Gitid < Formula
   desc "Switch git auth & user details between profiles"
   homepage "https://github.com/RXNova/homebrew-gitid"
   url "https://github.com/RXNova/homebrew-gitid/archive/refs/tags/v0.1.1.tar.gz"
-  sha256 "3d0f946eaf221a4e0144d078396be85756a0cf10541e6bb9a26f733824f826dd"
+  sha256 "d9b6baa458fd0bc68c6d5171e83babaf9d1f340b3945e427bd380573c16e2e14"
   license "MIT"
 
   def install
