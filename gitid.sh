@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # gitid - switch git auth & user details
-# https://github.com/RXNova/gitid
+# https://github.com/RXNova/homebrew-gitid
 #
 # Source this file in your .zshrc or .bashrc:
 #   source /path/to/gitid.sh

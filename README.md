@@ -9,7 +9,7 @@ Auto-switches your git identity when you `cd` into a project directory.
 ### Homebrew (recommended)
 
 ```sh
-brew tap RXNova/gitid https://github.com/RXNova/gitid
+brew tap RXNova/gitid
 brew install gitid
 source /opt/homebrew/opt/gitid/gitid.sh && gitid setup
 ```
@@ -17,7 +17,7 @@ source /opt/homebrew/opt/gitid/gitid.sh && gitid setup
 ### Manual
 
 ```sh
-git clone https://github.com/RXNova/gitid.git ~/.gitid-src
+git clone https://github.com/RXNova/homebrew-gitid.git ~/.gitid-src
 echo 'source ~/.gitid-src/gitid.sh' >> ~/.zshrc
 source ~/.zshrc
 ```
