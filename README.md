@@ -11,7 +11,7 @@ Auto-switches your git identity when you `cd` into a project directory.
 ```sh
 brew tap RXNova/gitid
 brew install gitid
-source /opt/homebrew/opt/gitid/gitid.sh && gitid setup
+gitid setup
 ```
 
 ### Manual

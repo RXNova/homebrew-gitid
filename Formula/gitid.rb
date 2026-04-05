@@ -8,28 +8,32 @@ class Gitid < Formula
   def install
     libexec.install "gitid.sh"
 
+    # Wrapper sourced by shell config
     (prefix/"gitid.sh").write <<~BASH
       #!/usr/bin/env bash
       [ -z "$GITID_DIR" ] && export GITID_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/gitid"
       \\. "#{libexec}/gitid.sh"
     BASH
+
+    # Standalone bin script for setup and basic commands before shell is configured
+    (bin/"gitid").write <<~BASH
+      #!/usr/bin/env bash
+      source "#{opt_prefix}/gitid.sh"
+      gitid "$@"
+    BASH
   end
 
   def caveats
     <<~EOS
-      Run the setup command to add gitid to your shell automatically:
+      Run this to add gitid to your shell:
 
-        source #{opt_prefix}/gitid.sh && gitid setup
-
-      Or manually add to ~/.zshrc or ~/.bashrc:
-
-        [ -s "#{opt_prefix}/gitid.sh" ] && \\. "#{opt_prefix}/gitid.sh"
+        gitid setup
 
       Then restart your terminal.
     EOS
   end
 
   test do
-    assert_match "gitid", shell_output("bash -c 'source #{opt_prefix}/gitid.sh && gitid version'")
+    assert_match "gitid", shell_output("#{bin}/gitid version")
   end
 end
