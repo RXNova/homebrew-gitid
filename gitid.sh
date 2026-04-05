@@ -14,6 +14,14 @@ GITID_CONFIG_FILE="$GITID_DIR/config"
 
 # ── helpers ──────────────────────────────────────────────
 
+_gitid_list_profile_files() {
+  local files=()
+  for f in "$GITID_PROFILES_DIR"/*; do
+    [ -f "$f" ] && files+=("$f")
+  done
+  echo "${files[@]}"
+}
+
 _gitid_ensure_dir() {
   [ -d "$GITID_PROFILES_DIR" ] || mkdir -p "$GITID_PROFILES_DIR"
   [ -f "$GITID_CONFIG_FILE" ] || cat > "$GITID_CONFIG_FILE" <<'EOF'
@@ -244,7 +252,7 @@ gitid() {
 
     # ── list ─────────────────────────────────────────
     list|ls)
-      local profiles=("$GITID_PROFILES_DIR"/*(N))
+      local -a profiles=(); for _f in "$GITID_PROFILES_DIR"/*; do [ -f "$_f" ] && profiles+=("$_f"); done
       if [ ${#profiles[@]} -eq 0 ]; then
         echo "No profiles saved. Use \"gitid add\" to create one."
         return 0
@@ -305,7 +313,7 @@ gitid() {
 
       if [ -z "$profile_name" ]; then
         # Interactive selection
-        local profiles=("$GITID_PROFILES_DIR"/*(N))
+        local -a profiles=(); for _f in "$GITID_PROFILES_DIR"/*; do [ -f "$_f" ] && profiles+=("$_f"); done
         if [ ${#profiles[@]} -eq 0 ]; then
           echo "No profiles saved. Use \"gitid add\" to create one."
           return 0
@@ -566,7 +574,8 @@ gitid() {
       local current_name="$(git config $scope user.name 2>/dev/null)"
       local current_email="$(git config $scope user.email 2>/dev/null)"
       local matched=0
-      for file in "$GITID_PROFILES_DIR"/*(N); do
+      for file in "$GITID_PROFILES_DIR"/*; do
+        [ -f "$file" ] || continue
         local pname="$(basename "$file")"
         _gitid_read_profile "$pname"
         if [ "$_P_NAME" = "$current_name" ] && [ "$_P_EMAIL" = "$current_email" ]; then
@@ -690,5 +699,5 @@ gitid() {
   esac
 }
 
-# Run auto-switch on initial load
-_gitid_auto_switch
+# Run auto-switch on initial load (skip if called from bin wrapper)
+[ -z "$_GITID_NO_AUTO_SWITCH" ] && _gitid_auto_switch

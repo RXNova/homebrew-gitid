@@ -18,6 +18,7 @@ class Gitid < Formula
     # Standalone bin script for setup and basic commands before shell is configured
     (bin/"gitid").write <<~BASH
       #!/usr/bin/env bash
+      export _GITID_NO_AUTO_SWITCH=1
       source "#{opt_prefix}/gitid.sh"
       gitid "$@"
     BASH
