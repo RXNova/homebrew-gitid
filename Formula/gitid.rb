@@ -8,29 +8,38 @@ class Gitid < Formula
   def install
     libexec.install "gitid.sh"
 
-    # Wrapper sourced by shell config
+    # Wrapper sourced by shell config (enables cd auto-switch)
     (prefix/"gitid.sh").write <<~BASH
       #!/usr/bin/env bash
       [ -z "$GITID_DIR" ] && export GITID_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/gitid"
       \\. "#{libexec}/gitid.sh"
     BASH
 
-    # Standalone bin script for setup and basic commands before shell is configured
+    # Standalone bin script — auto-runs setup on first use
     (bin/"gitid").write <<~BASH
       #!/usr/bin/env bash
       export _GITID_NO_AUTO_SWITCH=1
       source "#{opt_prefix}/gitid.sh"
+
+      # Auto-setup on first run
+      if ! grep -q "gitid.sh" "$HOME/.zshrc" 2>/dev/null && \
+         ! grep -q "gitid.sh" "$HOME/.bashrc" 2>/dev/null; then
+        gitid setup
+        echo ""
+        echo "Restart your terminal to enable auto-switch on cd."
+        echo ""
+      fi
+
       gitid "$@"
     BASH
   end
 
   def caveats
     <<~EOS
-      Run this to add gitid to your shell:
+      gitid will auto-configure your shell on first run.
+      Just run any gitid command to get started:
 
-        gitid setup
-
-      Then restart your terminal.
+        gitid help
     EOS
   end
 
